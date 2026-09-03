@@ -71,7 +71,7 @@ Performance Toolkit — driver updater, FPS booster, temp monitor
 Install any plugin from Marketplace in 1 click.
 
 🎨 THEME ENGINE — Playnite, AI, and GitHub Made
-Full theme system inspired by Playnite but expanded.
+Full theme system, inspired by Playnite but expanded.
 
 Theme Types:
 
