@@ -1,0 +1,16 @@
+[
+    {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "title": "<p>Welcome</p>",
+        "titlePreview": "Welcome",
+        "contentPreview": "Thank you for choosing Notepad. A simple way to ca...",
+        "type": "TEXT",
+        "audioDurationMs": 0,
+        "isFavorite": false,
+        "isLocked": false,
+        "reminderDateTime": null,
+        "version": 3,
+        "createdAt": 1787003336684,
+        "updatedAt": 1787003346508
+    }
+]
