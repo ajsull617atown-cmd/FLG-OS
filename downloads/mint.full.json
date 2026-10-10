@@ -1,0 +1,163 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "FLG OS",
+  "logo": {
+    "dark": "/logo/flg-dark.svg",
+    "light": "/logo/flg-light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#DC2626",
+    "light": "#FF2D2D",
+    "dark": "#7F1D1D",
+    "anchors": {
+      "from": "#DC2626",
+      "to": "#991B1B"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/factorylinegaming/flg-os"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Download FLG Lite",
+    "url": "https://factorylinegaming.com/download"
+  },
+  "tabs": [
+    {
+      "name": "Docs",
+      "url": "docs"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "Bench Lab",
+      "url": "bench"
+    }
+  ],
+  "anchors": [
+    {
+      "icon": "discord",
+      "name": "Discord",
+      "url": "https://discord.gg/flg"
+    },
+    {
+      "icon": "android",
+      "name": "Reactor Live APK",
+      "url": "https://play.google.com/store/apps/details?id=com.flg.reactorlive"
+    }
+  ],
+  "footerSocials": {
+    "discord": "https://discord.gg/flg",
+    "github": "https://github.com/factorylinegaming"
+  },
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "docs/introduction",
+        "docs/quickstart",
+        "docs/installation",
+        "docs/hardware",
+        "docs/changelog"
+      ]
+    },
+    {
+      "group": "Core OS",
+      "pages": [
+        "docs/core/tel-html",
+        "docs/core/thermal",
+        "docs/core/governor-lock",
+        "docs/core/dex-mode",
+        "docs/core/cerberus-forge-theme"
+      ]
+    },
+    {
+      "group": "Factory Line",
+      "pages": [
+        "docs/factory/overview",
+        "docs/factory/termux-stack",
+        "docs/factory/dextop-linux",
+        "docs/factory/background-builds",
+        "docs/factory/gradle-pipeline",
+        "docs/factory/self-build-ide"
+      ]
+    },
+    {
+      "group": "AI Nexus - 6/6 ONLINE",
+      "pages": [
+        "docs/ai/nexus-hub",
+        "docs/ai/ollama-team",
+        "docs/ai/models",
+        {
+          "group": "Performance",
+          "pages": [
+            "docs/ai/tokens-per-sec",
+            "docs/ai/ram-management",
+            "docs/ai/fan-thermal-ai"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "APK Line",
+      "pages": [
+        "docs/apk-line/overview",
+        "docs/apk-line/reactor-live",
+        "docs/apk-line/thermal-command",
+        "docs/apk-line/vault-launcher",
+        "docs/apk-line/ai-nexus-hub",
+        "docs/apk-line/cover-forge",
+        "docs/apk-line/dex-tiling-manager",
+        "docs/apk-line/bench-lab",
+        "docs/apk-line/obsidian-keyboard"
+      ]
+    },
+    {
+      "group": "Forge Assets",
+      "pages": [
+        "docs/assets/8k-covers",
+        "docs/assets/live-wallpapers",
+        "docs/assets/icon-packs",
+        "docs/assets/sound-forge"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/introduction",
+        {
+          "group": "Thermal API",
+          "pages": [
+            "api-reference/thermal/get-stats",
+            "api-reference/thermal/set-profile",
+            "api-reference/thermal/fan-control"
+          ]
+        },
+        {
+          "group": "Vault API",
+          "pages": [
+            "api-reference/vault/search",
+            "api-reference/vault/index"
+          ]
+        },
+        {
+          "group": "AI Nexus API",
+          "pages": [
+            "api-reference/ai/list-models",
+            "api-reference/ai/chat",
+            "api-reference/ai/kill-reload"
+          ]
+        }
+      ]
+    }
+  ],
+  "llms": {
+    "customFile": "/llms.txt",
+    "routing": "thermal-first"
+  }
+}

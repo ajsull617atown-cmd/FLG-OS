@@ -1,0 +1,5 @@
+appId: com.factorylinegaming.flos
+productName: FLG-OS v13
+directories: { output: dist }
+files: ["**/*", "!build/emulators/**"]
+extraResources: [{ from: "build/emulators", to: "emulators" }]

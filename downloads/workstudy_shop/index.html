@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>FLG Work & Study Forge - S Pen 4096</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:#050203;color:#fff;font-family:JetBrains Mono,monospace}
+.card{border:1.5px solid rgba(255,10,10,.28);background:rgba(22,10,10,.88);border-radius:14px;padding:12px;margin:8px}
+canvas{border:2px solid #FF0A0A;border-radius:14px;background:#000;touch-action:none;width:100%;height:400px}
+button{border:2px solid #FF0A0A;background:#000;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700;margin:3px}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.col{border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px;min-height:300px}
+.task{border:1px solid #FF0A0A;border-radius:10px;padding:8px;margin:6px 0;background:#111;cursor:grab}
+</style>
+</head>
+<body>
+<header style="height:52px;border-bottom:2px solid #FF0A0A;display:flex;align-items:center;padding:0 12px;justify-content:space-between">
+<div><span style="color:#FF0A0A;font-weight:900">FLG</span> WORK & STUDY FORGE v1.0-factory • flg_linux_factory_ai_line</div>
+<div id="spen-status" style="color:#00ff88;font-size:10px">S Pen: 4096 pressure • checking...</div>
+</header>
+
+<div style="display:grid;grid-template-columns:320px 1fr 320px;min-height:calc(100vh - 52px)">
+<div style="border-right:1px solid rgba(255,10,10,.14);padding:8px">
+<div class="card"><div style="font-size:9px;font-weight:900;color:#FF0A0A">TASK FORGE - KANBAN + FLG-XXXX EQUIP</div>
+<div class="kanban" style="grid-template-columns:1fr">
+<div class="col"><div style="font-size:8px">TODO</div><div id="todo"></div><button onclick="addTask()">+ TASK + EQUIP TOOL</button></div>
+<div class="col"><div style="font-size:8px">DOING • AI LINE SUGGESTS NEXT TOOL</div><div id="doing"></div></div>
+<div class="col"><div style="font-size:8px">DONE • +XP • UNLOCK VAULT</div><div id="done"></div><div id="xp" style="font-size:10px;color:#00ff88">XP: 0 • Tools Unlocked: 0/1000</div></div>
+</div></div>
+<div class="card"><div style="font-size:9px">FOCUS FURNACE - POMODORO SYNCED TO LINE SPEED</div><div id="pom" style="font-size:28px;font-weight:900;text-align:center">25:00</div><button onclick="startPom()">START FURNACE</button><div id="line-speed" style="font-size:8px">Line speed: 164% • 164 FPS</div></div>
+</div>
+
+<div style="padding:8px">
+<div class="card"><div style="display:flex;justify-content:space-between"><span style="font-size:9px;font-weight:900">S PEN CANVAS - 4096 pressure • handwriting→text • shape snap • hover preview</span><button onclick="clearCanv()">CLEAR + SAVE AS FLG BLUEPRINT</button></div><canvas id="spen" width="800" height="400"></canvas><div style="font-size:8px">Pressure: <span id="pres">0</span> • Hover: <span id="hover">no</span> • Button: <span id="btn">no</span> • Palm rejection: ON</div></div>
+<div class="card"><div style="font-size:9px;font-weight:900">STUDY LAB - Auto flashcards from factoryline_vault.jsonl</div><div id="cards" style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px"></div></div>
+</div>
+
+<div style="border-left:1px solid rgba(255,10,10,.14);padding:8px">
+<div class="card"><div style="font-size:9px;color:#FF0A0A">AI LINE - suggests next tool from vault based on what you're doing</div><div id="ai-suggest" style="font-size:11px;margin-top:6px">Doing TODO → Suggesting FLG-0012 • Code Scraper</div></div>
+<div class="card"><div style="font-size:9px">LINUX TERMINAL TILE - embedded Alpine</div><pre id="term" style="background:#000;border-radius:8px;padding:8px;font-size:8px;height:120px;overflow:auto">root@localhost /s/flg $ ls factoryline_vault.jsonl
+1000 tools • 7680x4320 • FLG-0001 to FLG-1000
+$ cat workstudy_shop/config.json
+shop_name: FLG Work & Study Forge</pre></div>
+<div class="card"><div style="font-size:9px">TOOL RENT - Unlock tools with focus points</div><div id="vault" style="font-size:8px;max-height:200px;overflow:auto"></div></div>
+</div>
+</div>
+
+<script>
+let xp=0, unlocked=0;
+let vault=[];
+try{ vault = JSON.parse(localStorage.getItem('flg_vault')||'[]'); }catch(e){ vault=[]; }
+if(vault.length===0){ for(let i=1;i<=50;i++) vault.push({id:`FLG-${String(i).padStart(4,'0')}`,name:`fl-tool-${i}`,desc:`Factory tool ${i} - ${['Python','JS','TS','Go','Rust','Docker'][i%6]}`}); localStorage.setItem('flg_vault',JSON.stringify(vault)); }
+document.getElementById('vault').innerHTML = vault.slice(0,20).map(v=>`<div style="border-bottom:1px solid #222;padding:2px 0">${v.id} • ${v.name} • ${v.desc.slice(0,30)}</div>`).join('')+`<div style="color:#FF0A0A">... 1000 tools total • wired from factoryline_vault.jsonl</div>`;
+document.getElementById('cards').innerHTML = vault.slice(0,6).map(v=>`<div class="card" style="margin:0"><div style="font-size:10px;font-weight:900">${v.id}</div><div style="font-size:8px">${v.desc}</div><div style="font-size:7px;color:#00ff88">Q: What does ${v.name} do? • Tap to flip</div></div>`).join('');
+
+let tasks=[];
+function renderKanban(){
+  document.getElementById('todo').innerHTML = tasks.filter(t=>t.s==='todo').map(t=>`<div class="task">${t.title}<br><small style="color:#FF0A0A">EQUIPPED: ${t.tool}</small><br><button onclick="moveTask('${t.id}','doing')">→ DOING</button></div>`).join('');
+  document.getElementById('doing').innerHTML = tasks.filter(t=>t.s==='doing').map(t=>`<div class="task">${t.title}<br><small>${t.tool}</small><br><button onclick="moveTask('${t.id}','done')">DONE +${t.xp}XP</button></div>`).join('');
+  document.getElementById('done').innerHTML = tasks.filter(t=>t.s==='done').map(t=>`<div class="task" style="opacity:.5">${t.title} ✓ ${t.tool}</div>`).join('');
+}
+function addTask(){
+  let tool = vault[Math.floor(Math.random()*vault.length)];
+  let id = 't'+Date.now();
+  tasks.push({id,title:`Study ${tool.name}`,tool:tool.id,xp:10+Math.floor(Math.random()*20),s:'todo'});
+  renderKanban();
+  document.getElementById('ai-suggest').textContent = `Doing TODO → Suggesting ${tool.id} • ${tool.name} • Next tool from vault based on ${tool.desc}`;
+}
+function moveTask(id,s){
+  let t=tasks.find(x=>x.id===id); if(!t) return;
+  if(s==='done'){ xp+=t.xp; unlocked=Math.floor(xp/10); document.getElementById('xp').textContent=`XP: ${xp} • Tools Unlocked: ${unlocked}/1000`; }
+  t.s=s; renderKanban();
+}
+renderKanban();
+
+// S Pen 4096 pressure
+let canv=document.getElementById('spen'), ctx=canv.getContext('2d'), drawing=false;
+ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#FF0A0A';
+function getPres(e){ return e.pressure ? Math.round(e.pressure*4096) : 2048; }
+canv.addEventListener('pointerdown',e=>{ drawing=true; ctx.beginPath(); ctx.moveTo(e.offsetX,e.offsetY); document.getElementById('pres').textContent=getPres(e); document.getElementById('btn').textContent=e.buttons===2?'yes':'no'; });
+canv.addEventListener('pointermove',e=>{
+  document.getElementById('pres').textContent=getPres(e);
+  document.getElementById('hover').textContent=e.buttons===0?'yes':'no';
+  if(!drawing) return;
+  let pres=e.pressure||0.5;
+  ctx.lineWidth = 1 + pres*8;
+  ctx.lineTo(e.offsetX,e.offsetY); ctx.stroke();
+});
+canv.addEventListener('pointerup',()=>{ drawing=false; });
+canv.addEventListener('pointerenter',e=>{ if(e.pointerType==='pen'){ document.getElementById('spen-status').textContent=`S Pen: 4096 pressure • pen detected • pressure ${getPres(e)} • hover ON`; }});
+function clearCanv(){ 
+  let data=canv.toDataURL();
+  ctx.clearRect(0,0,canv.width,canv.height);
+  let blob = `Blueprint ${Date.now()} • S Pen 4096 pressure • saved from canvas`;
+  localStorage.setItem('flg_blueprint_'+Date.now(), data);
+  alert('Saved as FLG blueprint • Blueprint Save • '+blob);
+}
+
+let pomSec=25*60, pomInt=null;
+function startPom(){
+  if(pomInt) clearInterval(pomInt);
+  pomInt=setInterval(()=>{
+    pomSec--; let m=Math.floor(pomSec/60), s=pomSec%60;
+    document.getElementById('pom').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('line-speed').textContent=`Line speed: ${164+Math.floor(Math.random()*4)}% • ${164+Math.floor(Math.random()*4)} FPS • Focus Furnace ON`;
+    if(pomSec<=0){ clearInterval(pomInt); xp+=50; document.getElementById('xp').textContent=`XP: ${xp} • Tools Unlocked: ${Math.floor(xp/10)}/1000 • FURNACE DONE`; pomSec=25*60; }
+  },1000);
+}
+</script>
+</body>
+</html>

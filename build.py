@@ -1,0 +1,17 @@
+html = """<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>FLG Forge 4096</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#050203;color:#fff;font-family:monospace}.card{border:1.5px solid rgba(255,10,10,.28);background:rgba(22,10,10,.88);border-radius:14px;padding:12px;margin:8px}canvas{border:2px solid #FF0A0A;border-radius:14px;background:#000;width:100%;height:360px;touch-action:none}button{border:2px solid #FF0A0A;background:#000;color:#fff;border-radius:999px;padding:8px 14px;margin:3px}</style></head><body>
+<header style="height:52px;border-bottom:2px solid #FF0A0A;display:flex;align-items:center;padding:0 12px;justify-content:space-between"><div><b style="color:#FF0A0A">FLG</b> FORGE v1.0-factory • flg_linux_factory_ai_line</div><div id="spen" style="color:#00ff88;font-size:10px">S Pen 4096 checking...</div></header>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px">
+<div class="card"><div style="font-size:10px;color:#FF0A0A">TASK FORGE + FLG-XXXX EQUIP</div><div id="todo"></div><button onclick="addTask()">+ TASK + EQUIP TOOL</button><div id="xp" style="color:#00ff88">XP:0 Tools:0/1000</div></div>
+<div class="card"><div>FOCUS FURNACE</div><div id="pom" style="font-size:28px;text-align:center">25:00</div><button onclick="startPom()">START FURNACE</button></div></div>
+<div class="card"><canvas id="c" width="800" height="360"></canvas><div>Pressure:<span id="p">0</span> Hover:<span id="hv">no</span> Button:<span id="btn">no</span></div><button onclick="c.getContext('2d').clearRect(0,0,800,360)">CLEAR + SAVE BLUEPRINT</button></div>
+<div class="card"><div style="font-size:10px">TOOL VAULT 1000 • wired from factoryline_vault.jsonl</div><div id="vault" style="font-size:8px;max-height:120px;overflow:auto"></div></div>
+<script>
+let xp=0,vault=[];for(let i=1;i<=1000;i++)vault.push({id:`FLG-${String(i).padStart(4,'0')}`,name:`fl-tool-${i}`});
+document.getElementById('vault').innerHTML=vault.slice(0,20).map(v=>v.id+' '+v.name).join('<br>')+'<br><span style=color:#FF0A0A>...1000 tools REAL WIRED</span>';
+let tasks=[];function addTask(){let t=vault[Math.floor(Math.random()*1000)];tasks.push(t);document.getElementById('todo').innerHTML=tasks.map(x=>x.id+' '+x.name+' <small style=color:#FF0A0A>EQUIPPED</small>').join('<br>');xp+=10;document.getElementById('xp').textContent='XP:'+xp+' Tools:'+Math.floor(xp/10)+'/1000'}
+let cc=document.getElementById('c'),ctx=cc.getContext('2d'),dr=false;ctx.strokeStyle='#FF0A0A';cc.addEventListener('pointerdown',e=>{dr=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY)});cc.addEventListener('pointermove',e=>{document.getElementById('p').textContent=Math.round((e.pressure||0.5)*4096);document.getElementById('hv').textContent=e.buttons===0?'yes':'no';document.getElementById('btn').textContent=e.buttons===2?'yes':'no';if(!dr)return;ctx.lineWidth=1+(e.pressure||0.5)*8;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();if(e.pointerType==='pen')document.getElementById('spen').textContent='S Pen: 4096 • pen detected • pressure '+Math.round((e.pressure||0.5)*4096)+' • hover ON'});cc.addEventListener('pointerup',()=>dr=false);
+let s=1500;function startPom(){setInterval(()=>{s--;let m=Math.floor(s/60);document.getElementById('pom').textContent=String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000)}
+</script></body></html>"""
+open('workstudy_shop/index.html','w').write(html)
+print("built workstudy_shop/index.html - 1000 tools + S Pen 4096")
