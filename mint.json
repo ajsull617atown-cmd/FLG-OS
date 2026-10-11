@@ -1,0 +1,17 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "FLG Engine Docs",
+  "logo": "/logo.png",
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#00F0FF",
+    "light": "#00F0FF",
+    "dark": "#FF0033"
+  },
+  "navigation": [
+    {
+      "group": "System Specs",
+      "pages": ["docs/specs/FLG_SYSTEM_SPEC"]
+    }
+  ]
+}

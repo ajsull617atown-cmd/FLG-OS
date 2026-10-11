@@ -1,0 +1,12 @@
+name: FLG Agentic Spec Compiler
+on:
+  push:
+    paths:
+      - 'docs/specs/**'
+jobs:
+  compile-spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Spec Engine
+        run: echo "Compiling FLG Specs into Code Pipeline..."
