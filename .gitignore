@@ -1,5 +1,42 @@
-*.lnk
-*.data
-*.jar
-blazer_*
-LDPlayer*
+# === SECRET - MUST NOT PUSH ===
+factoryline_vault.jsonl
+*.vault.json
+*.key
+*.pem
+init.sql
+.env
+
+# === LARGE BINARIES / ARCHIVES - Gemini warning ===
+*.tgz
+*.tar
+*.tar.gz
+*.zip
+ollama.*
+*.apk
+*.aab
+*.arsc
+*.dex
+
+# === DATA DUMPS ===
+mint.full.json
+labels.json
+notes.json
+note_labels.json
+ACE Scanner_*.txt
+*.sdocx
+downloads/
+workstudy_shop/
+
+# === Encoding bug ===
+*_x5f_*
+*_x005f_*
+
+# === Normal ignores ===
+__pycache__/
+node_modules/
+.gradle/
+build/
+dist/
+.DS_Store
+Thumbs.db
+analyze_251.py

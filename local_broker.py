@@ -169,7 +169,10 @@ class H(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
+        try:
         self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
     def do_OPTIONS(self):
         self._send(204)
     def do_GET(self):
