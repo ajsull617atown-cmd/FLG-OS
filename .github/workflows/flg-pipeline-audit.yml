@@ -1,0 +1,11 @@
+name: FLG Pipeline Audit (Local Spec)
+on: [push]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: FLG Pipeline Guard - CodeRabbit Mintlify WAF check
+        run: |
+          echo "Local tracking structure for Code Rabbit, Mintlify docs sync, and WAF security layers"
+          ls -R

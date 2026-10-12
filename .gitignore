@@ -40,3 +40,6 @@ dist/
 .DS_Store
 Thumbs.db
 analyze_251.py
+factoryline_vault.jsonl
+*.tgz
+*.tar.gz
