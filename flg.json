@@ -1,0 +1,13 @@
+{
+  "name": "FLG OS",
+  "type": "os",
+  "version": "4.1",
+  "entry": "manifest.json",
+  "launch": "main.js",
+  "icon": "assets/icon.png",
+  "cover": "assets/cover.png",
+  "description": "FLG OS - 8K SHD FINAL 1000+ REAL WIRED - Electron + backend",
+  "compositor": "7680x4320 33.2MP 120Hz 801ppi 8K SHD",
+  "tags": ["os", "core", "electron", "8k"],
+  "launchable": true
+}
